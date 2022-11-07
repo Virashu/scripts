@@ -8,7 +8,7 @@ then
 	exit
 fi
 
-git init --bare $HOME/.config
+git init --bare $HOME/.cfg
 alias config='/usr/bin/git --git-dir=$HOME/.cfg --work-tree=$HOME'
 config config --local status.showUntrackedFiles no
 
@@ -21,13 +21,6 @@ else
 	exit
 fi
 
-echo "Initialized successfully!"
+config remote add origin git@github.com:virashu/dotfiles.git
 
-read -p "Wish to move dotfiles? [Y/n]" ans
-if [[ $ans == 'n' ]] || [[ $ans == 'N' ]]; then
-	echo "Quitting..."
-	exit
-fi
-if [[ $ans == 'y' ]] || [[ $ans == 'Y' ]] || [[ $ans == '' ]]; then
-	rsync -av --progress ./ $HOME/ --exclude quickinstall.sh
-fi
+echo "Initialized successfully!"
