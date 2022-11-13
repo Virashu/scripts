@@ -8,19 +8,25 @@ then
 	exit
 fi
 
+read -c "github username: " username
+read -c "github email: " email
+git config --global user.email "$email"
+git config --global user.name "$username"
+
 git init --bare $HOME/.cfg
 alias config='/usr/bin/git --git-dir=$HOME/.cfg --work-tree=$HOME'
-config config --local status.showUntrackedFiles no
+git --git-dir=$HOME/.cfg --work-tree=$HOME config --local status.showUntrackedFiles no
 
 if [[ "$SHELL" == "/bin/bash" ]]; then
-	echo "alias config='/usr/bin/git --git-dir=$HOME/.cfg --work-tree=$HOME'" >> .bashrc
-elif [[ "$SHELL" == "/usr/bin/zsh" ]]; then
-	echo "alias config='/usr/bin/git --git-dir=$HOME/.cfg --work-tree=$HOME'" >> .zshrc
+	echo "You are using bash"
+	echo "alias config='/usr/bin/git --git-dir=$HOME/.cfg --work-tree=$HOME'" >> $HOME/.bashrc
+elif [[ "$SHELL" == "/usr/bin/zsh" ]] || [[ "$SHELL" == "/bin/zsh" ]]; then
+	echo "alias config='/usr/bin/git --git-dir=$HOME/.cfg --work-tree=$HOME'" >> $HOME/.zshrc
 else
 	echo "ERROR"
 	exit
 fi
 
-config remote add origin git@github.com:virashu/dotfiles.git
+git --git-dir=$HOME/.cfg --work-tree=$HOME remote add origin git@github.com:virashu/dotfiles.git
 
 echo "Initialized successfully!"
