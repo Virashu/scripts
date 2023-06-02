@@ -1,0 +1,27 @@
+#!/bin/sh
+
+xmenu <<EOF | sh &
+applications
+	General
+		kitty	kitty
+		Files	nautilus
+	Coding
+		vscode	code
+		neovim	kitty nvim
+	Graphics
+		Krita		krita
+	Audio
+		Piano		drumstick-vpiano
+	Games
+		Techmino	techmino_development
+		MultiMC		multimc
+	System
+		OpenTabletDriver	otd-gui
+		Control panel			gnome-control-center
+		KDE settings			systemsettings
+
+run...			dmenu
+lock				slock
+reboot			reboot
+shutdown		poweroff
+EOF

@@ -1,6 +1,6 @@
 #!/bin/bash
 
-listgit=("dwm" "st" "slstatus" "dmenu")
+listgit=("dwm" "st" "slstatus" "dmenu" "startpage")
 
 for ix in ${listgit[*]}
 do
