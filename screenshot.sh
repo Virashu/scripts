@@ -10,13 +10,13 @@ function get_last {
 
 case $1 in
 	normal)
-		/usr/bin/scrot -d0 "$dir/$dest"
+		/usr/bin/scrot -d0 "$dest"
 		;;
 	focused)
-		/usr/bin/scrot -d0 --focused "$dir/$dest"
+		/usr/bin/scrot -d0 --focused "/$dest"
 		;;
 	selection)
-		/usr/bin/scrot -d0 --select "$dir/$dest"
+		/usr/bin/scrot -d0 --select "/$dest"
 		;;
 esac
 
