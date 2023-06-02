@@ -63,7 +63,7 @@ while true; do
 		get_image
 		#notify-send -t 1000 "$icon $title"
 		#dunstify -i $file -u normal -t 1000 "$icon $title" -h int:value:$pos
-		dunstify -i $file -u normal -t 2500 "$status:" "$title"
+		dunstify -i $file -u normal -t 5000 "$status:" "$title"
 	fi
 done
 
