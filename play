@@ -1,0 +1,18 @@
+#!/bin/bash
+
+
+case $# in
+1)
+  files=$1
+  ;;
+*)
+  files=$(fd -e mp3 | shuf | awk '{ print "\""$0"\""}')
+  ;;
+esac
+echo $files
+echo "$files"
+
+echo "===================="
+
+mpg123 -Cv $(echo -n $files)
+

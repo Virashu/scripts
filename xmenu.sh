@@ -2,8 +2,11 @@
 base="/usr/share/icons/Papirus-Dark"
 xmenu <<EOF | sh &
 General
-	kitty	kitty
-	Files	nautilus
+	IMG:$base/128x128/apps/firefox.svg	Firefox	firefox
+	IMG:$base/128x128/apps/kitty.svg	kitty	kitty
+	IMG:$base/128x128/apps/nautilus.svg	Files	nautilus
+	IMG:$base/128x128/apps/telegram.svg	Telegram	telegram-desktop
+	IMG:$base/128x128/apps/discord.svg	Discord		discord
 Coding
 	IMG:$base/128x128/apps/code.svg	vscode	code
 	IMG:$base/128x128/apps/io.neovim.nvim.svg	kitty nvim
@@ -19,11 +22,11 @@ Games
 	MultiMC		multimc
 System
 	OpenTabletDriver	otd-gui
-	Control panel			gnome-control-center
-	KDE settings			systemsettings
+	IMG:$base/symbolic/apps/gnome-control-center-symbolic.svg	Control panel	gnome-control-center
+	IMG:$base/symbolic/apps/gnome-control-center-symbolic.svg	KDE settings	systemsettings
 
 run...			dmenu
-lock				slock
+lock				i3lock-fancy
 IMG:$base/symbolic/actions/system-reboot-symbolic.svg	reboot			reboot
 IMG:$base/symbolic/actions/system-shutdown-symbolic.svg	shutdown		poweroff
 EOF

@@ -1,0 +1,20 @@
+#!/bin/env bash
+
+case $1 in
+  border)
+    xsetroot -name
+    ;;
+  togglesystray)
+    xsetroot -name fsignal:1
+    ;;
+  togglebar)
+    xsetroot -name fsignal:2
+    ;;
+  togglevacant | togglehidevacant)
+    xsetroot -name fsignal:3
+    ;;
+  quit)
+    xsetroot -name fsignal:4
+    ;;
+esac
+

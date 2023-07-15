@@ -20,5 +20,11 @@ case $1 in
 		;;
 esac
 
-dunstify -i $(get_last) "scrot" "Screenshot taken"
+last=$(get_last)
+onclick="xclip -selection clipboard -target image/png -i $last"
+
+if [ $(dunstify -i "$last" -A copy,copy "scrot" "Screenshot taken") -eq 2 ]; then
+	$onclick
+	dunstify "copied to clipboard"
+fi
 

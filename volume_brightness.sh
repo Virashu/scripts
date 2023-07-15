@@ -44,6 +44,16 @@ function show_brightness_notif {
   dunstify -i brightness -t 1000 -r 2593 -u normal "$brightness_icon $brightness%" -h int:value:$brightness -h string:hlcolor:$bar_color
 }
 
+function show_battery_notif {
+	charge=$(cat /sys/class/power_supply/BAT1/capacity)
+	charge_icon=$(bash /home/virashu/Documents/battery.sh)
+	dunstify -i charge_icon -t 1000 -r 2593 -u normal "$charge_icon $charge%" -h int:value:$charge -h string:hlcolor:$bar_color
+}
+
+function show_time_notif {
+	dunstify -t 2500 -r 2593 -u normal "$(date)"
+}
+
 case $1 in
   volume_up)
     pactl set-sink-mute @DEFAULT_SINK@ 0
@@ -71,4 +81,16 @@ case $1 in
     xbacklight -dec $brightness_step -time 0
     show_brightness_notif
     ;;
+	notify_volume)
+		show_volume_notif
+		;;
+	notify_brightness)
+		show_brightness_notif
+		;;
+	notify_battery)
+		show_battery_notif
+		;;
+	notify_time)
+		show_time_notif
+		;;
 esac

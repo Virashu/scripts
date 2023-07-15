@@ -1,0 +1,8 @@
+#!/bin/env bash
+
+dunstify "ζ"
+kitty cava &
+kitty cmatrix &
+kitty asciiquarium &
+donut.c 
+

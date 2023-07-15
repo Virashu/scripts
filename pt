@@ -1,0 +1,4 @@
+#!/bin/env bash
+
+python3 /home/virashu/python/theme/theme.py $1
+

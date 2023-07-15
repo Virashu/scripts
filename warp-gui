@@ -1,0 +1,6 @@
+#!/bin/env bash
+
+
+#~/.local/share/applications/warp-gui.desktop
+python3 /home/virashu/git/warp-cloudflare-gui/main.py --hide
+

@@ -1,0 +1,6 @@
+#!/bin/bash
+
+sleep $1
+dunstify -t 2000 "timer" "$1s timer complete"
+paplay /usr/share/sounds/freedesktop/stereo/bell.oga
+

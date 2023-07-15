@@ -1,0 +1,65 @@
+#!/bin/env bash
+trap "clear;echo goodbye" EXIT
+
+function get_title {
+  title=$(playerctl metadata title 2>/dev/null)
+}
+
+function get_artist {
+  artist=$(playerctl metadata artist 2>/dev/null)
+}
+
+function get_status {
+  status=$(playerctl status 2>/dev/null)
+}
+
+
+function get_display {
+  get_title
+  get_status
+  get_artist
+  if grep -q 'No pla' <<< "$title" || ! playerctl status 2>/dev/null >/dev/null; then
+    echo 'No media playing'
+  else
+    echo "   $title $artist"
+    #  
+  fi
+}
+
+function get_image {
+	f=$(playerctl metadata mpris:artUrl) && \
+  file=${f#"file://"} || \
+  #round "$file" || \
+  file=$fallback_image
+}
+
+function round() {
+	file=$(bash /home/virashu/scripts/round.sh "$1")
+}
+
+display=""
+rows_prev=$LINES
+cols_prev=$COLUMNS
+
+while true; do
+  prev_display=$display
+  display=$(get_display)
+  if [ "$display" != "$prev_display" ] || [ "$COLUMNS" != "$cols_prev" ] || [ "$LINES" != "$rows_prev" ]; then
+    rows_prev=$LINES
+    cols_prev=$COLUMNS
+    clear
+    if [ "$TERM" == "xterm-kitty" ]; then
+      get_image
+      w=10
+      h=10
+      kitten icat --place "$w"x"$h"@0x0 "$file"
+    fi
+    echo
+    for LINE in $display; do
+      m=$(echo $LINE | center 20)
+      echo "           $m"
+    done
+  fi
+  sleep 0.1
+done
+

@@ -1,0 +1,19 @@
+#!/usr/bin/env bash
+
+readarray message < <(expand)
+
+case $# in
+1)
+    width="${1:-$(tput cols)}"
+    ;;
+2)
+    width=$1
+    ;;
+esac
+
+margin=$(awk -v "width=$width" '
+    { max_len = length > width ? width : length > max_len ? length : max_len }
+    END { printf "%" int((width - max_len + 1) / 2) "s", "" }
+' <<<"${message[@]}")
+
+printf "%s" "${message[@]/#/$margin}"

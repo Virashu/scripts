@@ -40,6 +40,10 @@ while true; do
     # If critical and discharging
     if [ "$status" = "Discharging" ] && [ $capacity -le $critical ]; then
       notify-send -u critical -t 2000 "Battery very low: $capacity%"
+      if [ $critaware -eq 1 ]; do
+        pkill picom
+        pkill komorebi
+      fi
       last="CRITICAL"
     fi
   fi

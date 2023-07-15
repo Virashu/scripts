@@ -34,22 +34,30 @@ function get_pos {
 function notify2 {
 	f=$(playerctl metadata mpris:artUrl) && \
 	file=${f#"file://"} && \
-	dunstify -i $file -r 2593 -u normal "[1] Now Playing:" "$(playerctl metadata title)" || \
+	dunstify -i "$file" -r 2593 -u normal "[1] Now Playing:" "$(playerctl metadata title)" || \
 	dunstify -i $fallback_image -r 2593 -u normal "[2] Now Playing:" "$(playerctl metadata title)"
 }
 
 function get_image {
 	f=$(playerctl metadata mpris:artUrl) && \
-	file=${f#"file://"} || \
+	file=${f#"file://"} && \
+	[ ${#file} -lt 200 ] &&
+	round $file || \
 	file=$fallback_image
+}
+
+function round() {
+	file=$(bash /home/virashu/scripts/round.sh "$1")
 }
 
 get_title
 prev_title=$title
 
 get_status
-prev_status=$(status)
+prev_status=$status
 # Paused Playing Stopped
+
+rounded="1"
 
 while true; do
 	get_status
@@ -58,12 +66,18 @@ while true; do
 	if [ "$status" != "$prev_status" ] || [ "$title" != "$prev_title" ]; then
 		prev_status=$status
 		prev_title=$title
-		pos=$(get_pos)
-		get_icon
-		get_image
-		#notify-send -t 1000 "$icon $title"
-		#dunstify -i $file -u normal -t 1000 "$icon $title" -h int:value:$pos
-		dunstify -i $file -u normal -t 5000 "$status:" "$title"
+		if [ "$title" != "" ]; then
+			pos=$(get_pos)
+			get_icon
+			get_image
+			#if [ "$rounded" == "1" ] && [ ${#file} -lt 200 ]; then
+			#	round "$file"
+			#fi
+			#notify-send -t 1000 "$icon $title"
+			#dunstify -i $file -u normal -t 1000 "$icon $title" -h int:value:$pos
+			dunstify -i "$file" -u normal -t 5000 "$status:" "$title"
+		fi
 	fi
+	sleep 1
 done
 
