@@ -28,6 +28,10 @@ function get_brightness_icon {
   brightness_icon="󰃞"
 }
 
+function get_battery_icon {
+	charge_icon=$(bash /home/virashu/Documents/battery.sh)
+}
+
 function show_volume_notif {
   volume=$(get_volume)
   icon=$(get_volume_icon)
@@ -41,12 +45,12 @@ function show_volume_notif {
 function show_brightness_notif {
   brightness=$(get_brightness)
   get_brightness_icon
-  dunstify -i brightness -t 1000 -r 2593 -u normal "$brightness_icon $brightness%" -h int:value:$brightness -h string:hlcolor:$bar_color
+  dunstify -i brightness -t 1000 -r 2593 -u normal "${brightness_icon} ${brightness}%" -h int:value:${brightness} -h string:hlcolor:${bar_color}
 }
 
 function show_battery_notif {
 	charge=$(cat /sys/class/power_supply/BAT1/capacity)
-	charge_icon=$(bash /home/virashu/Documents/battery.sh)
+  get_battery_icon
 	dunstify -i charge_icon -t 1000 -r 2593 -u normal "$charge_icon $charge%" -h int:value:$charge -h string:hlcolor:$bar_color
 }
 

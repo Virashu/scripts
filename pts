@@ -1,4 +1,4 @@
 #!/bin/env bash
 
-python3 /home/virashu/python/theme/themes.py $1
+python3 /home/virashu/dev/git/pytheme/themes.py $1
 
