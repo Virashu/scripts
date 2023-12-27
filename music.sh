@@ -1,36 +1,42 @@
 #!/bin/bash
 
 
-function get_title {
-  title=$(playerctl metadata title 2>/dev/null)
-}
-
-function get_status {
-  status=$(playerctl status 2>/dev/null)
-}
-
-get_title
-get_status
+title=$(playerctl metadata title 2>/dev/null)
+status=$(playerctl status 2>/dev/null)
 bg=$(xrdb -query | grep -Po '(?<=\*.bg1:\t)(#[0-9abcdef]{6})')
 
-#npi=$(echo "$title" | grep "No pla")
-
-sp=' '
 if [ ${#title} -gt 20 ]; then
   title="$(echo $title | head -c 20)..."
 fi
 
-if grep -q 'No pla' <<< "$title" || ! playerctl status 2>/dev/null >/dev/null; then
-  msg=""
-elif [ "$status" == "Stopped" ]; then
-  msg=""
-elif [ "$status" == "Paused" ]; then
-  msg="^c$bg^^d^^b$bg^  $title ^d^^c$bg^^d^ "
-else
-  msg="^c$bg^^d^^b$bg^  $title ^d^^c$bg^^d^ "
+if grep -q "No pla" <<< "$title" || ! playerctl status &>/dev/null || [ "$status" == "Stopped" ]; then
+  echo ""
+  exit
 fi
 
-#msg=$(echo "$msg" | head -c 80)
+#icon_active=""
+#icon_paused=""
 
-echo "$msg"
+icon_paused=""
+icon_active=""
+#icon_active="󰏤"
+
+if [ "$status" == "Paused" ]; then
+  icon="${icon_paused}"
+else
+  icon="${icon_active}"
+fi
+
+# Minimal
+#msg="^c${bg}^^d^^b${bg}^ ${icon} ${title} ^d^^c${bg}^^d^ "
+
+esc_prev="\x0b"
+esc_pause="\x0c"
+esc_next="\x0a"
+esc_clear="\x01"
+
+# With controls
+msg="^c${bg}^^d^^b${bg}^${esc_prev}   ${esc_pause}${icon} ${esc_next}  ${esc_clear}${title} ^d^^c${bg}^^d^ \n"
+
+echo -e "${msg}"
 
