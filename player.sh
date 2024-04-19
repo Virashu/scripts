@@ -1,83 +1,63 @@
-#!/bin/bash2
+#!/bin/env bash
 
 
-music_library="$HOME/music"
 fallback_image="/usr/share/icons/Papirus-Dark/16x16/apps/audio-player.svg"
-
+delay=0.5
 
 function get_status {
-	status=$(playerctl status)
+	echo $(playerctl status)
 }
 
 function get_icon {
-	$(get_status)
+	local status=$(get_status)
 
 	if [ "$status" = "Playing" ]; then
-		icon=""
+		echo ""
 	elif [ "$status" = "Paused" ]; then
-		icon=""
+		echo ""
 	fi
 }
 
 function get_title {
-	title=$(playerctl metadata title)
-	#title=
-}
-
-function get_pos {
-	lengthh=$(playerctl metadata mpris:length)
-	length=$(( "$lengthh" / 1000000 ))
-	now=$(playerctl position)
-	awk "BEGIN {print $now / $length * 100}" 
-}
-
-function notify2 {
-	f=$(playerctl metadata mpris:artUrl) && \
-	file=${f#"file://"} && \
-	dunstify -i "$file" -r 2593 -u normal "[1] Now Playing:" "$(playerctl metadata title)" || \
-	dunstify -i $fallback_image -r 2593 -u normal "[2] Now Playing:" "$(playerctl metadata title)"
+	echo $(playerctl metadata title)
 }
 
 function get_image {
-	f=$(playerctl metadata mpris:artUrl) && \
-	file=${f#"file://"} && \
-	[ ${#file} -lt 200 ] &&
-	round $file || \
-	file=$fallback_image
+	#f=$(playerctl metadata mpris:artUrl) && file=${f#"file://"} && [ ${#file} -lt 200 ] && round $file || \
+	local _file=$(playerctl metadata mpris:artUrl)
+
+	if [[ $? ]]; then
+		echo ${_file#"file://"}
+	else
+		echo $fallback_image
+	fi
 }
 
 function round() {
-	file=$(bash /home/virashu/scripts/round.sh "$1")
+	echo $(bash /home/virashu/scripts/round.sh "$1")
 }
 
-get_title
+title=$(get_title)
 prev_title=$title
 
-get_status
+status=$(get_status)
 prev_status=$status
 # Paused Playing Stopped
 
-rounded="1"
-
 while true; do
-	get_status
-	get_title
-	#	echo "$status"
+	status=$(get_status)
+	title=$(get_title)
 	if [ "$status" != "$prev_status" ] || [ "$title" != "$prev_title" ]; then
 		prev_status=$status
 		prev_title=$title
 		if [ "$title" != "" ]; then
-			pos=$(get_pos)
-			get_icon
-			get_image
-			#if [ "$rounded" == "1" ] && [ ${#file} -lt 200 ]; then
-			#	round "$file"
-			#fi
-			#notify-send -t 1000 "$icon $title"
-			#dunstify -i $file -u normal -t 1000 "$icon $title" -h int:value:$pos
-			dunstify -i "$file" -u normal -t 5000 "$status:" "$title"
+			icon=$(get_icon)
+			image=$(get_image)
+
+			echo "Image: ${image}"
+			dunstify -i "${image}" -r 813 -u normal -t 5000 "${status}:" "${title}"
 		fi
 	fi
-	sleep 1
+	sleep $delay
 done
 

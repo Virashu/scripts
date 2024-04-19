@@ -6,7 +6,7 @@ status=$(playerctl status 2>/dev/null)
 bg=$(xrdb -query | grep -Po '(?<=\*.bg1:\t)(#[0-9abcdef]{6})')
 
 if [ ${#title} -gt 20 ]; then
-  title="$(echo $title | head -c 20)..."
+  title=$(printf %s "${title:0:17}...")
 fi
 
 if grep -q "No pla" <<< "$title" || ! playerctl status &>/dev/null || [ "$status" == "Stopped" ]; then

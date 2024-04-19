@@ -1,6 +1,6 @@
-#!/bin/sh
+#!/usr/bin/bash
 base="/usr/share/icons/Papirus-Dark"
-xmenu <<EOF | sh &
+xmenu << EOF | sh &
 General
 	IMG:$base/128x128/apps/firefox.svg	Firefox	firefox
 	IMG:$base/128x128/apps/kitty.svg	kitty	kitty
